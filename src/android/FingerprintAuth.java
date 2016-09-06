@@ -397,8 +397,15 @@ public class FingerprintAuth extends CordovaPlugin {
                     // Show the fingerprint dialog. The user has the option to use the fingerprint with
                     // crypto, or you can fall back to using a server-side verified password.
                     mFragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
+                    try {
                     mFragment.show(cordova.getActivity()
                             .getFragmentManager(), DIALOG_FRAGMENT_TAG);
+                    } catch (Exception e) {
+                      Log.e(TAG, e.getLocalizedMessage());
+                      mCallbackContext.error("Failed to show fragment");
+                      mPluginResult = new PluginResult(PluginResult.Status.ERROR);
+                      mCallbackContext.sendPluginResult(mPluginResult);
+                    }
                 } else {
                     mCallbackContext.error("Failed to init Cipher");
                     mPluginResult = new PluginResult(PluginResult.Status.ERROR);
