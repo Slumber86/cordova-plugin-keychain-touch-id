@@ -195,8 +195,14 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
     public void onAuthenticated() {
         // Callback from FingerprintUiHelper. Let the activity know that authentication was
         // successful.
-        mFingerPrintAuth.onAuthenticated(true /* withFingerprint */);
-        dismiss();
+        try {
+          mFingerPrintAuth.onAuthenticated(true /* withFingerprint */);
+          dismiss();
+        } catch (java.lang.IllegalStateException e){
+          String errorMessage = "Failed to dismiss auth fragment:" +
+                  " IllegalStateException:  " + e.getMessage();
+          Log.e(TAG, errorMessage);
+        }
     }
 
     @Override
